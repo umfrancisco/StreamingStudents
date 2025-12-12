@@ -69,6 +69,10 @@ public class Student {
 		return LocalDate.now().getYear() - yearEnrolled;
 	}
 	
+	public int getAge() {
+		return ageEnrolled+getYearsSinceEnrolled();
+	}
+	
 	public int getMonthsSinceActive(String courseCode) {
 		CourseEngagement info = engagementMap.get(courseCode);
 		return info == null ? 0 : info.getMonthsSinceActive();
