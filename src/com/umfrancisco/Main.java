@@ -9,6 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		Course pymc = new Course("PYMC", "Python Masterclass");
 		Course jmc = new Course("JMC", "Java Masterclass");
+		
 //		Student tim = new Student("AU", 2019, 30, "M", true, jmc, pymc);
 //		System.out.println(tim);
 //		
@@ -45,5 +46,35 @@ public class Main {
 			System.out.printf("# of students (%s) = %d%n", i == 0 ? " < 30" : ">= 30 & < 60", cnt);
 		}
 		System.out.println("# of students >= 60 = "+(students.length - total));
+		
+		var ageStream = Arrays.stream(students)
+				.mapToInt(Student::getAgeEnrolled);
+		System.out.println("Stats for enrollment age = "+ageStream.summaryStatistics());
+		
+		var currentAgeStream = Arrays.stream(students)
+				.mapToInt(Student::getAge);
+		System.out.println("Stats for current age = "+currentAgeStream.summaryStatistics());
+		
+		Arrays.stream(students)
+			.map(Student::getCountryCode)
+			.distinct()
+			.sorted()
+			.forEach(s -> System.out.print(s + " "));
+		
+		System.out.println();
+		boolean longTerm = Arrays.stream(students)
+				.anyMatch(s -> (s.getAge() - s.getAgeEnrolled() >= 7) && (s.getMonthsSinceActive() < 12));
+		System.out.println("longTerm students? "+longTerm);
+		
+		long longTermCount = Arrays.stream(students)
+				.filter(s -> (s.getAge() - s.getAgeEnrolled() >= 7) && (s.getMonthsSinceActive() < 12))
+				.count();
+		System.out.println("longTerm students? "+longTermCount);
+		
+		Arrays.stream(students)
+				.filter(s -> (s.getAge() - s.getAgeEnrolled() >= 7) && (s.getMonthsSinceActive() < 12))
+				.filter(s -> !s.hasProgrammingExperience())
+				.limit(5)
+				.forEach(System.out::println);
 	}
 }
